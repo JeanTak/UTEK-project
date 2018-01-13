@@ -1,5 +1,7 @@
 import math
 
+TRANNINGSET = 1000000
+
 def EDncrypt(k,rawin,op):
     #NOTE THAT op=1 -> Encrypt op=0->decrypton
     #chr(65) = 'A'
@@ -24,7 +26,7 @@ def EDncrypt(k,rawin,op):
 def count(s):
     f = open('trainningset.txt','r')
     txt = f.read()
-    dataset = txt
+    dataset = txt[:TRANNINGSET]
     #dataset = ' A quick fox jumps over a lazy bear'
     dataset = dataset.replace("N", "")
     dataset = dataset.replace("<unk>","")
@@ -63,13 +65,6 @@ def Evaluate(target):
             Sum = Sum + math.log(pr,10)
     return Sum 
 
-#main
-
-
-
-
-
-
 def StepCode3A(inputString):
     #3A
     ScoreList = [];
@@ -77,17 +72,21 @@ def StepCode3A(inputString):
     for i in range(26):
         #DeString is the string decrypted
         DeString = EDncrypt(i, inputString, 0);
-        ScoreList.append(Evaluate(DeString));
+        S = Evaluate(DeString)
+        ScoreList.append(S);
+        print ("when k = ",i,EDncrypt(i, inputString, 0),"score = ", S)
     
     Max = max(ScoreList);
+    k=ScoreList.index(Max)
     
-    print ScoreList.index(Max);
+    print ("k is ", k);
     print Max;
+    print ("the sentence is "+EDncrypt(k, inputString, 0))
     
 
 f = open('trainningset.txt','r')
 txt = f.read()
-dataset = txt
+dataset = txt[:TRANNINGSET]
 #dataset = 'A quick fox jumps over a lazy bear'
 dataset = dataset.replace("N", "")
 dataset = dataset.replace("<unk>","")
@@ -107,9 +106,16 @@ database = list(set(database))
 
 dataset = ' '.join(dataset)
 #print(dataset)
-#print(database)    
-Input = input()
-StepCode2A(Input)
+#print(database)  
+
+
+
+
+
+Input = 'YMJ PJD KTW YMNX RJXXFLJ NX 5 (KNAJ)'
+StepCode3A(Input)
+
+
 
 
  
