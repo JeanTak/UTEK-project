@@ -24,12 +24,13 @@ fstr = f.read()
 #read input file and output to output file
 commandlist = fstr.split('\n')
 for command in commandlist:
-    command = command.split(' | ')
-    if (command[0] == 'ENCRYPT'):
-        op=1
-    else:
-        op =0
-    outf.write(EDncrypt(int(command[1]),command[2],op)+'\n')
+    if command.strip():
+        command = command.split(' | ')
+        if (command[0] == 'ENCRYPT'):
+            op=1
+        else:
+            op =0
+        outf.write(EDncrypt(int(command[1]),command[2],op)+'\n')
 
 f.close()
 outf.close()

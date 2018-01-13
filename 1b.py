@@ -38,17 +38,18 @@ fstr = f.read()
 #read input file and output to output file
 commandlist = fstr.split('\n')
 for command in commandlist:
-    command = command.split(' | ')
-    if (command[0] == 'ENCRYPT'):
-        op=1
-    else:
-        op =0
-    key = command[1].split(" ")
-    
-    for i in range(len(key)):#convert key from str to int
-        key[i] = int(key[i])
-    message = command[2]
-    outf.write(block_step(key,message,op)+'\n')
+    if command.strip():
+        command = command.split(' | ')
+        if (command[0] == 'ENCRYPT'):
+            op=1
+        else:
+            op =0
+        key = command[1].split(" ")
+        
+        for i in range(len(key)):#convert key from str to int
+            key[i] = int(key[i])
+        message = command[2]
+        outf.write(block_step(key,message,op)+'\n')
 
 f.close()
 outf.close()

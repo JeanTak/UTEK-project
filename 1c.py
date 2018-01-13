@@ -11,9 +11,14 @@ def permu_code(key, rawin, op):
     r = []
     for i in rawin:
         if (ord(i)<=90 and ord(i) >=65):
-            p = ord(i)-65
-            newi = key[p]
-            r.append(newi) 
+            if (op ==1) :
+                p = ord(i)-65
+                newi = key[p]
+                r.append(newi) 
+            else:
+                p = key.index(i)
+                newi = chr(p+65)
+                r.append(newi)    
         else:
             r.append(i)        
             
@@ -27,12 +32,16 @@ fstr = f.read()
 #read input file and output to output file
 commandlist = fstr.split('\n')
 for command in commandlist:
-    command = command.split(' | ')
-    if (command[0] == 'ENCRYPT'):
-        op=1
-    else:
-        op =0
-    outf.write(EDncrypt(int(command[1]),command[2],op)+'\n')
+    if command.strip():
+        command = command.split(' | ')
+        if (command[0] == 'ENCRYPT'):
+            op=1
+        else:
+            op =0
+        
+        key = list(command[1])
+        message=command[2]
+        outf.write(permu_code(key,message,op)+'\n')
 
 f.close()
 outf.close()
