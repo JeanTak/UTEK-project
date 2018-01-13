@@ -1,6 +1,6 @@
 import math
 
-TRANNINGSET = 1000000
+TRANNINGSET = 10000000
 
 def EDncrypt(k,rawin,op):
     #NOTE THAT op=1 -> Encrypt op=0->decrypton
@@ -21,28 +21,11 @@ def EDncrypt(k,rawin,op):
         else:
             r.append(i)
         
-    return ''.join(r)
-    
-def count(s):
-    f = open('trainningset.txt','r')
-    txt = f.read()
-    dataset = txt[:TRANNINGSET]
-    #dataset = ' A quick fox jumps over a lazy bear'
-    dataset = dataset.replace("N", "")
-    dataset = dataset.replace("<unk>","")
-    dataset = dataset.upper()
-    
-    pos = 0;
-    c = 0;
+    return ''.join(r)       
 
-    while (dataset.find(s, pos) != -1):
-        pos = dataset.find(s,pos) + 1
-        c = c + 1
-    return c        
-
-def Pr(s):
+def Pr(s,database):
     if (len(s) == 1):
-        if (count(s) != 0):
+        if (database.count(s) != 0):
             return 1 * 10
         else:
             return 0
@@ -51,28 +34,28 @@ def Pr(s):
     for i in range(len(s)):
         i += 1
         ru = ru * 10
-        d = float(count(s[:(i - 1)]))
+        d = float(database.count(s[:(i - 1)]))
         if (d != 0):
-            Sum = Sum + ru * count(s[:i]) / d
+            Sum = Sum + ru * database.count(s[:i]) / d
     return Sum
 
-def Evaluate(target):
+def Evaluate(target,database):
     target = target.split(' ')
     Sum = 0;
     for i in range(len(target)):
-        pr = Pr(target[i])
+        pr = Pr(target[i],database)
         if (pr != 0):
             Sum = Sum + math.log(pr,10)
     return Sum 
 
-def StepCode3A(inputString):
+def StepCode3A(inputString,database):
     #3A
     ScoreList = [];
     
     for i in range(26):
         #DeString is the string decrypted
         DeString = EDncrypt(i, inputString, 0);
-        S = Evaluate(DeString)
+        S = Evaluate(DeString,database)
         ScoreList.append(S);
         print ("when k = ",i,EDncrypt(i, inputString, 0),"score = ", S)
     
@@ -84,36 +67,42 @@ def StepCode3A(inputString):
     print ("the sentence is "+EDncrypt(k, inputString, 0))
     
 
-f = open('trainningset.txt','r')
+'''f = open('trainningset.txt','r')
 txt = f.read()
 dataset = txt[:TRANNINGSET]
-#dataset = 'A quick fox jumps over a lazy bear'
 dataset = dataset.replace("N", "")
 dataset = dataset.replace("<unk>","")
 dataset = dataset.upper()
 dataset = dataset.split(' ')
-
-database = []
-for i in range(len(dataset)):
-    if (len(dataset[i]) <= 7):
-        database.append(dataset[i])
-        
-database = list(set(database))
+     
+#database = list(set(database))
 
 #test purpose
 #for i in range(len(database)):
     #database[i] = database[i].replace(database[i], database[i] + str(count(database[i])))
 
-dataset = ' '.join(dataset)
+
 #print(dataset)
-#print(database)  
+#print(database)  '''
+
+f = open('trainningset.txt','r')
+txt = f.read()
+dataset = txt[:TRANNINGSET]
+dataset = dataset.replace("N", "")
+dataset = dataset.replace("<unk>","")
+dataset = dataset.upper()
+database = dataset
+
+'''database = []
+for i in range(len(dataset)):
+    if (len(dataset[i]) <= 7):
+        database.append(dataset[i])
+database = ' '.join(database)'''
 
 
 
-
-
-Input = 'YMJ PJD KTW YMNX RJXXFLJ NX 5 (KNAJ)'
-StepCode3A(Input)
+Input = 'RQIVGIVO EC, EPW QA PM? Q LWVB SVWE???'
+StepCode3A(Input, database)
 
 
 
