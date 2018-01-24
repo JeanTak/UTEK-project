@@ -1,0 +1,26 @@
+print (select_Pair([0.8566, 0.2213124, 0.952432],[[1,2],[10,15], [3,4]]))
+
+
+def combDNA(mom, dad):
+    '''combine 2 DNAs two form a new DNA
+    input: 2 strings of 1 and 0's
+    output: string of 1 and 0's ''' 
+    # string mom, dad
+    momList = list(mom)
+    dadList = list(dad)
+    # the number of bits is N*5
+    childList = []
+
+    for i in range (N*5):
+
+        if(momList[i]==dadList[i]):
+            childList.append(momList[i])
+
+        else:
+            childList.append(str(randint(0,1)))
+    
+    return ''.join(childList)
+
+child = combDNA('111110010100011','110101000100110')
+print(child)
+print("hi")
